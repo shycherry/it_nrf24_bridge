@@ -1,32 +1,50 @@
-var NRF24 = require("nrf/index.js"),
-    spiDev = "/dev/spidev0.0",
-    cePin = 24, irqPin = 25,            //var ce = require("./gpio").connect(cePin)
-    pipes = [Buffer("F0F0F0F0E1","hex"), Buffer("F0F0F0F0D2", "hex")];
+var ITNODE = require("IT_NODE"),
+  // NRF24 = require("nrf/index.js"),
+  spiDev = "/dev/spidev0.0",
+  cePin = 24, irqPin = 25,            //var ce = require("./gpio").connect(cePin)
+  pipes = [Buffer("F0F0F0F0E1","hex"), Buffer("F0F0F0F0D2", "hex")];
 
-var nrf = NRF24.connect(spiDev, cePin, irqPin);
-//nrf._debug=true;
-nrf.channel(0x4C);
-nrf.transmitPower('PA_MAX');
-nrf.dataRate('1Mbps');
-nrf.crcBytes(2);
-nrf.autoRetransmit({count:15, delay:500});
+var _nullCb = function(){};
 
-nrf.begin(function () {
-    var rx = nrf.openPipe('rx', pipes[1], {autoAck:false}),
-        tx = nrf.openPipe('tx', pipes[0], {autoAck:false});
+ITNODE.addService({
+  name : "sendData",
+  handler : function(args, cb){
+    cb = cb | _nullCb;
+    if(!args)
+      return cb('ENOARGS');
+    if(!args.ip)
+      return cb('ENOIP');
+    if(!args.data)
+      return cb('ENODATA');
 
-    nrf.printDetails();
-
-    rx.on('data', function (d) {
-        console.log(d);
-	tx.write(d);
-    });
-
-    tx.on('error', function (e) {
-        console.warn("Error sending reply.", e);
-    });
-
-    tx.on('ready', function(e){
-        tx.write("test");  
-    });
+    console.log("sending data: "+args.data+" to ip: "+args.ip);
+  }
 });
+
+// var nrf = NRF24.connect(spiDev, cePin, irqPin);
+// //nrf._debug=true;
+// nrf.channel(0x4C);
+// nrf.transmitPower('PA_MAX');
+// nrf.dataRate('1Mbps');
+// nrf.crcBytes(2);
+// nrf.autoRetransmit({count:15, delay:500});
+
+// nrf.begin(function () {
+//   var rx = nrf.openPipe('rx', pipes[1], {autoAck:false}),
+//       tx = nrf.openPipe('tx', pipes[0], {autoAck:false});
+
+//   nrf.printDetails();
+
+//   rx.on('data', function (d) {
+//       console.log(d);
+//   tx.write(d);
+//   });
+
+//   tx.on('error', function (e) {
+//       console.warn("Error sending reply.", e);
+//   });
+
+//   tx.on('ready', function(e){
+//       tx.write("test");
+//   });
+// });

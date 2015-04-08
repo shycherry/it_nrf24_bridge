@@ -46,10 +46,12 @@ nrf.begin(function () {
         tx.on('ready', function(e){
           hashTX[args.ip] = tx;
           tx.write(args.data);
+          return cb(null, "SDATAWROTE");
         });
 
       }else{
         tx.write(args.data);
+        return cb(null, "SDATAWROTE");
       }
     }
   });

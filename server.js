@@ -26,7 +26,7 @@ nrf.begin(function () {
   ITNODE.addService({
     name : "sendData",
     handler : function(args, cb){
-      cb = cb | _nullCb;
+      cb = cb || _nullCb;
       if(!args)
         return cb('ENOARGS');
       if(!args.ip)

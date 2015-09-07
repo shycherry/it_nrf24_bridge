@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "IT_NODE": "https://github.com/shycherry/IT_NODE/tarball/master",
+    "IT_NODE": "shycherry/IT_NODE#wip",
     "nrf": "^0.8.3"
   },
   "author": "",

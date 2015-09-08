@@ -28,14 +28,13 @@ nrf.begin(function () {
   then(function(){
   return itNode.addService({
       name : "sendData",
-      handler : function(args, cb){
-        cb = cb || _nullCb;
+      handler : function(args, itSocket){
         if(!args)
-          return cb('ENOARGS');
+          return 'ENOARGS';
         if(!args.ip)
-          return cb('ENOIP');
+          return 'ENOIP';
         if(!args.data)
-          return cb('ENODATA');
+          return 'ENODATA';
 
         console.log("request sending data: "+args.data+" to ip: "+args.ip);
 
@@ -49,12 +48,12 @@ nrf.begin(function () {
           tx.on('ready', function(e){
             hashTX[args.ip] = tx;
             tx.write(args.data);
-            return cb(null, "SDATAWROTE");
+            return "SDATAWROTE";
           });
 
         }else{
           tx.write(args.data);
-          return cb(null, "SDATAWROTE");
+          return "SDATAWROTE";
         }
       }
     });

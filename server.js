@@ -36,7 +36,7 @@ nrf.begin(function () {
         if(!args.data)
           return 'ENODATA';
 
-        console.log("request sending data: "+args.data+" to ip: "+args.ip);
+        console.log("request sending data to ip: "+args.ip);
 
         var tx = hashTX[args.ip];
         if(!tx){
